@@ -1,0 +1,80 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Projects from '../components/Projects.astro';
+import Skills from '../components/Skills.astro';
+import Contact from '../components/Contact.astro';
+---
+
+<Layout title="John Doe - Desarrollador Full-Stack" description="Portfolio de John Doe, desarrollador full-stack especializado en aplicaciones web modernas y escalables.">
+  <Hero />
+  <About />
+  <Projects />
+  <Skills />
+  <Contact />
+</Layout>
+
+<style is:global>
+  /* Variables globales adicionales */
+  :root {
+    --section-padding: 6rem 0;
+    --container-max-width: 1200px;
+    --border-radius: 1rem;
+  }
+
+  /* Estilos de scroll suave */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Estilos de sección */
+  section {
+    padding: var(--section-padding);
+  }
+
+  .container {
+    max-width: var(--container-max-width);
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* Mejoras de responsive */
+  @media (max-width: 768px) {
+    section {
+      padding: 4rem 0;
+    }
+
+    .container {
+      padding: 0 1rem;
+    }
+
+    .section-title {
+      font-size: 2rem !important;
+      margin-bottom: 2rem !important;
+    }
+  }
+
+  /* Animaciones y transiciones */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .section-title {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  /* Focus states para accesibilidad */
+  .btn:focus-visible,
+  .nav-link:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+  }
+</style>
