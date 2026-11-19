@@ -2,7 +2,7 @@
 
 Sitio personal de Carlos Alberto Llano Flores, desarrollador de software full stack en Arequipa, Perú.
 
-**En línea:** https://carlos-llano.pages.dev
+**En línea:** https://carlos-llano.chefsitturchey.workers.dev
 
 ## Contenido
 
@@ -20,4 +20,4 @@ npm run dev      # http://localhost:4321
 npm run build    # genera dist/
 ```
 
-Hecho con [Astro](https://astro.build), sin frameworks de interfaz adicionales. Publicado en Cloudflare Pages.
+Hecho con [Astro](https://astro.build), sin frameworks de interfaz adicionales. Publicado en Cloudflare Workers.
