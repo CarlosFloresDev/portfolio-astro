@@ -5,6 +5,7 @@ export const perfil = {
   ubicacion: "Arequipa, Perú",
   email: "car.alberto549@gmail.com",
   github: "https://github.com/CarlosFloresDev",
+  linkedin: "https://www.linkedin.com/in/carlos-llano-flores",
   resumen:
     "Estoy terminando Diseño y Desarrollo de Software en TECSUP. Trabajo en todo el ciclo de una aplicación: prototipo en Figma, backend, base de datos, app móvil y despliegue. Vengo de una formación técnica en electrónica, así que conectar software con hardware —sensores, ESP32, dispositivos hápticos— me resulta natural.",
   roles: ["Backend .NET y Java", "Apps móviles con Flutter", "Web con React y Astro", "Videojuegos con Godot y Unity"],
