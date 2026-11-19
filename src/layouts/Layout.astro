@@ -1,228 +1,67 @@
 ---
+import "../styles/global.css";
+
 export interface Props {
   title: string;
-  description?: string;
+  description: string;
 }
 
-const { title, description = "Portfolio de desarrollo web full-stack" } = Astro.props;
+const { title, description } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta name="theme-color" content="#07080d" />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <nav class="navbar">
-      <div class="nav-container">
-        <a href="#" class="nav-logo">
-          <span class="logo-text">&lt;/&gt;</span>
-          <span class="logo-name">DevPortfolio</span>
-        </a>
-        <ul class="nav-menu">
-          <li><a href="#inicio" class="nav-link">Inicio</a></li>
-          <li><a href="#sobre-mi" class="nav-link">Sobre mí</a></li>
-          <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
-          <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
-          <li><a href="#contacto" class="nav-link">Contacto</a></li>
-        </ul>
-        <button class="nav-toggle" aria-label="Toggle navigation">
-          <span class="bars"></span>
-        </button>
-      </div>
-    </nav>
+    <div class="fondo" aria-hidden="true">
+      <div class="malla"></div>
+      <div class="luz luz-1"></div>
+      <div class="luz luz-2"></div>
+    </div>
+    <slot />
+    <script>
+      const obs = new IntersectionObserver(
+        (entradas) => {
+          for (const e of entradas) {
+            if (e.isIntersecting) {
+              e.target.classList.add("visible");
+              obs.unobserve(e.target);
+            }
+          }
+        },
+        { threshold: 0.12 },
+      );
+      document.querySelectorAll(".aparece").forEach((el) => obs.observe(el));
 
-    <main>
-      <slot />
-    </main>
-
-    <footer class="footer">
-      <div class="footer-container">
-        <div class="footer-content">
-          <div class="footer-section">
-            <h3>Contacto</h3>
-            <p>johndoe.dev@email.com</p>
-            <p>+34 600 123 456</p>
-          </div>
-          <div class="footer-section">
-            <h3>Redes Sociales</h3>
-            <div class="social-links">
-              <a href="https://github.com/johndoe" target="_blank" rel="noopener">GitHub</a>
-              <a href="https://linkedin.com/in/johndoe" target="_blank" rel="noopener">LinkedIn</a>
-              <a href="https://twitter.com/johndoe" target="_blank" rel="noopener">Twitter</a>
-            </div>
-          </div>
-          <div class="footer-section">
-            <h3>Ubicación</h3>
-            <p>Madrid, España</p>
-            <p>Disponible para trabajo remoto</p>
-          </div>
-        </div>
-        <div class="footer-bottom">
-          <p>&copy; 2026 John Doe. Todos los derechos reservados.</p>
-          <p>Construido con ❤️ y Astro</p>
-        </div>
-      </div>
-    </footer>
-
-    <style is:global>
-      :root {
-        --primary-color: #667eea;
-        --secondary-color: #764ba2;
-        --accent-color: #ff6b6b;
-        --text-primary: #2d3748;
-        --text-secondary: #718096;
-        --bg-primary: #ffffff;
-        --bg-secondary: #f7fafc;
-        --border-color: #e2e8f0;
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        --gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+      const roles = document.querySelector<HTMLElement>("[data-roles]");
+      if (roles && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const lista: string[] = JSON.parse(roles.dataset.roles ?? "[]");
+        let i = 0;
+        setInterval(() => {
+          roles.classList.add("saliendo");
+          setTimeout(() => {
+            i = (i + 1) % lista.length;
+            roles.textContent = lista[i];
+            roles.classList.remove("saliendo");
+          }, 350);
+        }, 2600);
       }
-
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      html {
-        scroll-behavior: smooth;
-      }
-
-      body {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        line-height: 1.6;
-        color: var(--text-primary);
-        background-color: var(--bg-primary);
-      }
-
-      .navbar {
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        box-shadow: var(--shadow-lg);
-        position: fixed;
-        top: 0;
-        width: 100%;
-        z-index: 1000;
-      }
-
-      .nav-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        height: 70px;
-      }
-
-      .nav-logo {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        font-weight: 600;
-        font-size: 1.25rem;
-      }
-
-      .logo-text {
-        color: var(--primary-color);
-        background: var(--gradient);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin-right: 0.5rem;
-      }
-
-      .nav-menu {
-        display: flex;
-        list-style: none;
-        gap: 2rem;
-      }
-
-      .nav-link {
-        text-decoration: none;
-        color: var(--text-primary);
-        font-weight: 500;
-        transition: color 0.3s ease;
-      }
-
-      .nav-link:hover {
-        color: var(--primary-color);
-      }
-
-      .footer {
-        background: var(--text-primary);
-        color: white;
-        margin-top: auto;
-        border-top-left-radius: 2rem;
-        border-top-right-radius: 2rem;
-      }
-
-      .footer-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 3rem 2rem 1rem;
-      }
-
-      .footer-content {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      .footer-section h3 {
-        margin-bottom: 1rem;
-        color: var(--primary-color);
-      }
-
-      .social-links {
-        display: flex;
-        gap: 1rem;
-      }
-
-      .social-links a {
-        color: white;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 0.5rem;
-        transition: background 0.3s ease;
-      }
-
-      .social-links a:hover {
-        background: rgba(255, 255, 255, 0.2);
-      }
-
-      .footer-bottom {
-        text-align: center;
-        padding-top: 2rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        font-size: 0.9rem;
-        opacity: 0.8;
-      }
-
-      main {
-        padding-top: 70px;
-      }
-
-      @media (max-width: 768px) {
-        .nav-menu {
-          display: none;
-        }
-
-        .nav-toggle {
-          display: flex;
-        }
-      }
-    </style>
+    </script>
   </body>
 </html>
