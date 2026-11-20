@@ -64,7 +64,7 @@ export const proyectos: Proyecto[] = [
     imagen: "/proyectos/ceniza-colonia.webp",
     acento: "#ff4fd8",
     enlaces: [
-      { texto: "Web del juego", url: "https://ceniza-neon.chefsitturchey.workers.dev/" },
+      { texto: "Web del juego", url: "https://ceniza-neon.pages.dev/" },
       { texto: "Jugar en itch.io", url: "https://chefsitturchey.itch.io/ceniza-neon" },
     ],
     destacado: true,
@@ -87,7 +87,7 @@ export const proyectos: Proyecto[] = [
     stack: ["Astro", "React", "Cloudflare Workers", "D1"],
     acento: "#f5b14c",
     enlaces: [
-      { texto: "Ver sitio", url: "https://casa-hl.chefsitturchey.workers.dev" },
+      { texto: "Ver sitio", url: "https://casa-hl.pages.dev" },
       { texto: "Código", url: "https://github.com/CarlosFloresDev/casa-hl" },
     ],
     destacado: true,
@@ -130,7 +130,7 @@ export const proyectos: Proyecto[] = [
     stack: ["Cloudflare Workers", "JavaScript"],
     imagen: "/proyectos/feka.webp",
     acento: "#9ef01a",
-    enlaces: [{ texto: "Ver sitio", url: "https://feka-studios.chefsitturchey.workers.dev" }],
+    enlaces: [{ texto: "Ver sitio", url: "https://feka-studios.pages.dev" }],
   },
   {
     nombre: "Massive",

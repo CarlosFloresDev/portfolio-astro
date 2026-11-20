@@ -2,7 +2,7 @@
 
 Sitio personal de Carlos Alberto Llano Flores, desarrollador de software full stack en Arequipa, Perú.
 
-**En línea:** https://carlos-llano.chefsitturchey.workers.dev
+**En línea:** https://carlos-llano.pages.dev
 
 ## Contenido
 
