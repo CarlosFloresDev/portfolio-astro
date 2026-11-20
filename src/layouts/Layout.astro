@@ -65,7 +65,44 @@ const canonical = lang === "en" ? enUrl : esUrl;
         } catch {}
       });
 
-      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+      const finePointer = matchMedia("(pointer: fine)").matches;
+
+      // Hero parallax: layers follow the pointer at different depths.
+      const hero = document.querySelector<HTMLElement>("[data-parallax]");
+      if (hero && !reduce && finePointer) {
+        let tx = 0, ty = 0, cx = 0, cy = 0, raf = 0;
+        const tick = () => {
+          cx += (tx - cx) * 0.08;
+          cy += (ty - cy) * 0.08;
+          hero.style.setProperty("--px", cx.toFixed(4));
+          hero.style.setProperty("--py", cy.toFixed(4));
+          raf = Math.abs(tx - cx) + Math.abs(ty - cy) > 0.001 ? requestAnimationFrame(tick) : 0;
+        };
+        window.addEventListener("pointermove", (e) => {
+          tx = e.clientX / innerWidth - 0.5;
+          ty = e.clientY / innerHeight - 0.5;
+          if (!raf) raf = requestAnimationFrame(tick);
+        }, { passive: true });
+      }
+
+      // Spotlight: a soft light follows the cursor over cards.
+      if (finePointer) {
+        document.querySelectorAll<HTMLElement>("[data-spot]").forEach((el) => {
+          el.addEventListener("pointermove", (e) => {
+            const r = el.getBoundingClientRect();
+            el.style.setProperty("--x", `${e.clientX - r.left}px`);
+            el.style.setProperty("--y", `${e.clientY - r.top}px`);
+          });
+        });
+      }
+
+      // Stagger children of grouped reveals.
+      document.querySelectorAll(".rows, .timeline, .skills, .pair").forEach((group) => {
+        Array.from(group.children).forEach((c, i) => (c as HTMLElement).style.setProperty("--d", `${i * 70}ms`));
+      });
+
+      if (!reduce) {
         const obs = new IntersectionObserver(
           (entries) => {
             for (const e of entries) {

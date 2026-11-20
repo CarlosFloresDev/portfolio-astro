@@ -12,6 +12,14 @@ const other: Lang = lang === "en" ? "es" : "en";
 const otherHref = other === "en" ? "/" : "/es/";
 const anio = new Date().getFullYear();
 const mail = `mailto:${perfil.email}`;
+const words = t(ui.hero.title).split(" ");
+const tech: [string, string][] = [
+  ["dotnet", ".NET"], ["openjdk", "Java"], ["springboot", "Spring Boot"], ["typescript", "TypeScript"],
+  ["react", "React"], ["nextdotjs", "Next.js"], ["astro", "Astro"], ["angular", "Angular"],
+  ["flutter", "Flutter"], ["kotlin", "Kotlin"], ["python", "Python"], ["django", "Django"],
+  ["postgresql", "PostgreSQL"], ["supabase", "Supabase"], ["docker", "Docker"], ["githubactions", "GitHub Actions"],
+  ["cloudflare", "Cloudflare"], ["tailwindcss", "Tailwind CSS"], ["godotengine", "Godot"], ["unity", "Unity"],
+];
 ---
 
 <Layout
@@ -19,6 +27,7 @@ const mail = `mailto:${perfil.email}`;
   title={`${perfil.nombre} | ${t(perfil.rol)}`}
   description={`${t(perfil.rol)}. ${t(ui.hero.sub)}`}
 >
+  <div class="progress" aria-hidden="true"></div>
   <a class="skip" href="#work">{lang === "en" ? "Skip to content" : "Ir al contenido"}</a>
 
   <header class="nav">
@@ -48,7 +57,11 @@ const mail = `mailto:${perfil.email}`;
     <section class="hero wrap">
       <div class="hero-copy">
         <p class="eyebrow">{t(ui.hero.eyebrow)}</p>
-        <h1>{t(ui.hero.title)}</h1>
+        <h1 aria-label={t(ui.hero.title)}>
+          {words.map((w, i) => (
+            <span class="word" aria-hidden="true" style={`--i:${i}`}>{w} </span>
+          ))}
+        </h1>
         <p class="lead">{t(ui.hero.sub)}</p>
         <div class="actions">
           <a class="btn btn-solid" href="#work">{t(ui.hero.ctaWork)} <Icon name="arrowRight" size={16} /></a>
@@ -56,17 +69,29 @@ const mail = `mailto:${perfil.email}`;
           <a class="btn btn-ghost" href={perfil.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" /> LinkedIn</a>
         </div>
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <img class="shot shot-back" src="/proyectos/ceniza-web.webp" alt="" width="1200" height="750" />
-        <img class="shot shot-mid" src="/proyectos/pixelandino.webp" alt="" width="1200" height="750" />
-        <img class="shot shot-front" src="/proyectos/fach-guide.webp" alt="" width="1280" height="800" fetchpriority="high" />
+      <div class="hero-visual" aria-hidden="true" data-parallax>
+        <div class="layer shot-back" style="--depth:10"><img class="shot" src="/proyectos/ceniza-web.webp" alt="" width="1200" height="750" /></div>
+        <div class="layer shot-mid" style="--depth:22"><img class="shot" src="/proyectos/pixelandino.webp" alt="" width="1200" height="750" /></div>
+        <div class="layer shot-front" style="--depth:36"><img class="shot" src="/proyectos/fach-guide.webp" alt="" width="1280" height="800" fetchpriority="high" /></div>
       </div>
     </section>
+
+    <div class="marquee" aria-label={lang === "en" ? "Technologies" : "Tecnologías"}>
+      <div class="marquee-track">
+        {[0, 1].map((k) => (
+          <ul aria-hidden={k === 1 ? "true" : undefined}>
+            {tech.map(([slug, name]) => (
+              <li><span class="logo" style={`--src:url(https://cdn.simpleicons.org/${slug})`}></span>{name}</li>
+            ))}
+          </ul>
+        ))}
+      </div>
+    </div>
 
     <section id="work" class="section wrap">
       <h2 class="h2 reveal">{t(ui.work.title)}</h2>
 
-      <article class="feature reveal">
+      <article class="feature reveal" data-spot>
         <a class="feature-media" href={destacado.enlaces[0].url} target="_blank" rel="noopener" tabindex="-1">
           <img src={destacado.imagen} alt={`${destacado.nombre} screenshot`} width="1280" height="800" loading="lazy" />
         </a>
@@ -85,7 +110,7 @@ const mail = `mailto:${perfil.email}`;
 
       <div class="pair">
         {pares.map((p) => (
-          <article class="card reveal">
+          <article class="card reveal" data-spot>
             <a class="card-media" href={p.enlaces[0].url} target="_blank" rel="noopener" tabindex="-1">
               <img src={p.imagen} alt={`${p.nombre} screenshot`} width="1200" height="750" loading="lazy" />
             </a>
@@ -107,7 +132,7 @@ const mail = `mailto:${perfil.email}`;
       <h3 class="h3 reveal">{t(ui.work.more)}</h3>
       <ul class="rows">
         {otros.map((p) => (
-          <li class="row reveal">
+          <li class="row reveal" data-spot>
             <div class:list={["row-thumb", { "no-img": !p.imagen }]}>
               {p.imagen ? (
                 <img src={p.imagen} alt="" width="1200" height="750" loading="lazy" />
@@ -155,7 +180,7 @@ const mail = `mailto:${perfil.email}`;
       <h2 class="h2 reveal">{t(ui.skills.title)}</h2>
       <div class="skills">
         {habilidades.map((h) => (
-          <div class="skill reveal">
+          <div class="skill reveal" data-spot>
             <h3>{t(h.grupo)}</h3>
             <p>{h.items.join(", ")}</p>
           </div>
