@@ -1,0 +1,199 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Icon from "./Icon.astro";
+import { perfil, ui, experiencia, destacado, pares, otros, habilidades, educacion, type Lang } from "../data/perfil";
+
+export interface Props {
+  lang: Lang;
+}
+const { lang } = Astro.props;
+const t = (x: Record<Lang, string>) => x[lang];
+const other: Lang = lang === "en" ? "es" : "en";
+const otherHref = other === "en" ? "/" : "/es/";
+const anio = new Date().getFullYear();
+const mail = `mailto:${perfil.email}`;
+---
+
+<Layout
+  lang={lang}
+  title={`${perfil.nombre} | ${t(perfil.rol)}`}
+  description={`${t(perfil.rol)}. ${t(ui.hero.sub)}`}
+>
+  <a class="skip" href="#work">{lang === "en" ? "Skip to content" : "Ir al contenido"}</a>
+
+  <header class="nav">
+    <div class="wrap nav-row">
+      <a href="#top" class="brand" aria-label={perfil.nombre}>
+        <span class="mark">CL</span>
+        <span class="brand-name">{perfil.nombre}</span>
+      </a>
+      <nav aria-label="Primary">
+        <a href="#work">{t(ui.nav.work)}</a>
+        <a href="#experience">{t(ui.nav.experience)}</a>
+        <a href="#skills">{t(ui.nav.skills)}</a>
+        <a href="#about">{t(ui.nav.about)}</a>
+      </nav>
+      <div class="nav-tools">
+        <a class="lang" href={otherHref} hreflang={other} lang={other}>{other.toUpperCase()}</a>
+        <button class="icon-btn" type="button" data-theme-toggle aria-label={t(ui.theme)}>
+          <span class="only-dark"><Icon name="sun" /></span>
+          <span class="only-light"><Icon name="moon" /></span>
+        </button>
+        <a class="btn btn-solid btn-sm" href="#contact">{t(ui.nav.contact)}</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <p class="eyebrow">{t(ui.hero.eyebrow)}</p>
+        <h1>{t(ui.hero.title)}</h1>
+        <p class="lead">{t(ui.hero.sub)}</p>
+        <div class="actions">
+          <a class="btn btn-solid" href="#work">{t(ui.hero.ctaWork)} <Icon name="arrowRight" size={16} /></a>
+          <a class="btn btn-ghost" href={perfil.github} target="_blank" rel="noopener"><Icon name="github" /> GitHub</a>
+          <a class="btn btn-ghost" href={perfil.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" /> LinkedIn</a>
+        </div>
+      </div>
+      <div class="hero-visual" aria-hidden="true">
+        <img class="shot shot-back" src="/proyectos/ceniza-web.webp" alt="" width="1200" height="750" />
+        <img class="shot shot-mid" src="/proyectos/pixelandino.webp" alt="" width="1200" height="750" />
+        <img class="shot shot-front" src="/proyectos/fach-guide.webp" alt="" width="1280" height="800" fetchpriority="high" />
+      </div>
+    </section>
+
+    <section id="work" class="section wrap">
+      <h2 class="h2 reveal">{t(ui.work.title)}</h2>
+
+      <article class="feature reveal">
+        <a class="feature-media" href={destacado.enlaces[0].url} target="_blank" rel="noopener" tabindex="-1">
+          <img src={destacado.imagen} alt={`${destacado.nombre} screenshot`} width="1280" height="800" loading="lazy" />
+        </a>
+        <div class="feature-body">
+          <p class="kind">{t(destacado.tipo)}</p>
+          <h3>{destacado.nombre}</h3>
+          <p>{t(destacado.descripcion)}</p>
+          <ul class="tags">{destacado.stack.map((s) => <li>{s}</li>)}</ul>
+          <div class="links">
+            {destacado.enlaces.map((e) => (
+              <a href={e.url} target="_blank" rel="noopener">{t(e.texto)} <Icon name="arrowUpRight" size={15} /></a>
+            ))}
+          </div>
+        </div>
+      </article>
+
+      <div class="pair">
+        {pares.map((p) => (
+          <article class="card reveal">
+            <a class="card-media" href={p.enlaces[0].url} target="_blank" rel="noopener" tabindex="-1">
+              <img src={p.imagen} alt={`${p.nombre} screenshot`} width="1200" height="750" loading="lazy" />
+            </a>
+            <div class="card-body">
+              <p class="kind">{t(p.tipo)}</p>
+              <h3>{p.nombre}</h3>
+              <p>{t(p.descripcion)}</p>
+              <ul class="tags">{p.stack.map((s) => <li>{s}</li>)}</ul>
+              <div class="links">
+                {p.enlaces.map((e) => (
+                  <a href={e.url} target="_blank" rel="noopener">{t(e.texto)} <Icon name="arrowUpRight" size={15} /></a>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="h3 reveal">{t(ui.work.more)}</h3>
+      <ul class="rows">
+        {otros.map((p) => (
+          <li class="row reveal">
+            <div class:list={["row-thumb", { "no-img": !p.imagen }]}>
+              {p.imagen ? (
+                <img src={p.imagen} alt="" width="1200" height="750" loading="lazy" />
+              ) : (
+                <span class="row-initial" aria-hidden="true">{p.nombre.replace(/[^A-Z]/g, "").slice(0, 2)}</span>
+              )}
+            </div>
+            <div class="row-main">
+              <div class="row-head">
+                <h4>{p.nombre}</h4>
+                <span class="kind">{t(p.tipo)}</span>
+              </div>
+              <p>{t(p.descripcion)}</p>
+              <ul class="tags">{p.stack.map((s) => <li>{s}</li>)}</ul>
+            </div>
+            <div class="row-links">
+              {p.enlaces.map((e) => (
+                <a href={e.url} target="_blank" rel="noopener" aria-label={`${p.nombre}: ${t(e.texto)}`}>
+                  {t(e.texto)} <Icon name="arrowUpRight" size={15} />
+                </a>
+              ))}
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="experience" class="section wrap">
+      <h2 class="h2 reveal">{t(ui.experience.title)}</h2>
+      <ol class="timeline">
+        {experiencia.map((x) => (
+          <li class="reveal">
+            <p class="when">{t(x.periodo)}</p>
+            <div>
+              <h3>{t(x.cargo)} <span class="at">{x.lugar}</span></h3>
+              <ul class="bullets">{x.puntos[lang].map((p) => <li>{p}</li>)}</ul>
+              <ul class="tags">{x.stack.map((s) => <li>{s}</li>)}</ul>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="skills" class="section wrap">
+      <h2 class="h2 reveal">{t(ui.skills.title)}</h2>
+      <div class="skills">
+        {habilidades.map((h) => (
+          <div class="skill reveal">
+            <h3>{t(h.grupo)}</h3>
+            <p>{h.items.join(", ")}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <section id="about" class="section wrap about">
+      <div class="reveal">
+        <h2 class="h2">{t(ui.about.title)}</h2>
+        <p>{t(ui.about.p1)}</p>
+        <p>{t(ui.about.p2)}</p>
+      </div>
+      <aside class="edu reveal">
+        <h3>{t(ui.about.education)}</h3>
+        <ul>
+          {educacion.map((e) => (
+            <li>
+              <strong>{t(e.titulo)}</strong>
+              <span>{e.lugar}, {e.periodo}</span>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </section>
+
+    <section id="contact" class="section wrap contact reveal">
+      <h2>{t(ui.contact.title)}</h2>
+      <p>{t(ui.contact.sub)}</p>
+      <div class="actions">
+        <a class="btn btn-solid btn-lg" href={mail}><Icon name="envelope" /> {perfil.email}</a>
+        <a class="btn btn-ghost btn-lg" href={perfil.linkedin} target="_blank" rel="noopener"><Icon name="linkedin" /> LinkedIn</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <span>&copy; {anio} {perfil.nombreCompleto}</span>
+    <span>{t(ui.footer)}</span>
+  </footer>
+</Layout>

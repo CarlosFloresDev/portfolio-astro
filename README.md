@@ -1,23 +1,32 @@
-# Portafolio de Carlos Llano
+# Carlos Llano | Portfolio
 
-Sitio personal de Carlos Alberto Llano Flores, desarrollador de software full stack en Arequipa, Perú.
+Personal portfolio of Carlos Alberto Llano Flores, full stack software developer.
 
-**En línea:** https://carlos-llano.pages.dev
+**Live:** https://carlos-llano.pages.dev (English) and https://carlos-llano.pages.dev/es/ (Spanish)
 
-## Contenido
+## Features
 
-- Presentación, experiencia (BlindForge, Fibertel Networks, Feka Studios) y educación.
-- Proyectos destacados con enlaces al código y a los sitios en producción.
-- Habilidades agrupadas por área.
+- Bilingual (English by default, Spanish at `/es/`) with `hreflang` alternates.
+- Light and dark themes that follow the system setting, with a manual toggle.
+- Selected work with real screenshots, experience, skills, education and contact.
+- Static output, no client framework, reduced-motion aware.
 
-Los datos del sitio están en `src/data/perfil.ts`; para actualizar el portafolio basta con editar ese archivo.
+## Editing content
 
-## Desarrollo
+All copy lives in `src/data/perfil.ts`. Every string has an `en` and an `es` value; the page template is `src/components/Page.astro`.
+
+## Development
 
 ```bash
 npm install
 npm run dev      # http://localhost:4321
-npm run build    # genera dist/
+npm run build    # outputs dist/
 ```
 
-Hecho con [Astro](https://astro.build), sin frameworks de interfaz adicionales. Publicado en Cloudflare Workers.
+Deployed to Cloudflare Pages:
+
+```bash
+npx wrangler pages deploy dist --project-name carlos-llano
+```
+
+Built with [Astro](https://astro.build) and [Phosphor Icons](https://phosphoricons.com).

@@ -1,66 +1,85 @@
 ---
 import "../styles/global.css";
+import type { Lang } from "../data/perfil";
 
 export interface Props {
   title: string;
   description: string;
+  lang: Lang;
 }
 
-const { title, description } = Astro.props;
+const { title, description, lang } = Astro.props;
+const site = Astro.site?.toString().replace(/\/$/, "") ?? "";
+const enUrl = `${site}/`;
+const esUrl = `${site}/es/`;
+const canonical = lang === "en" ? enUrl : esUrl;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={enUrl} />
+    <link rel="alternate" hreflang="es" href={esUrl} />
+    <link rel="alternate" hreflang="x-default" href={enUrl} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta name="theme-color" content="#07080d" />
-    <title>{title}</title>
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={`${site}/proyectos/fach-guide.webp`} />
+    <meta property="og:locale" content={lang === "en" ? "en_US" : "es_PE"} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#0c0d10" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f7f7f8" media="(prefers-color-scheme: light)" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <script is:inline>
+      document.documentElement.classList.add("js");
+      try {
+        const t = localStorage.getItem("theme");
+        if (t) document.documentElement.dataset.theme = t;
+      } catch {}
+    </script>
   </head>
   <body>
-    <div class="fondo" aria-hidden="true">
-      <div class="malla"></div>
-      <div class="luz luz-1"></div>
-      <div class="luz luz-2"></div>
-    </div>
     <slot />
     <script>
-      const obs = new IntersectionObserver(
-        (entradas) => {
-          for (const e of entradas) {
-            if (e.isIntersecting) {
-              e.target.classList.add("visible");
-              obs.unobserve(e.target);
-            }
-          }
-        },
-        { threshold: 0.12 },
-      );
-      document.querySelectorAll(".aparece").forEach((el) => obs.observe(el));
+      const btn = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+      btn?.addEventListener("click", () => {
+        const root = document.documentElement;
+        const current =
+          root.dataset.theme ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+        const next = current === "dark" ? "light" : "dark";
+        root.dataset.theme = next;
+        try {
+          localStorage.setItem("theme", next);
+        } catch {}
+      });
 
-      const roles = document.querySelector<HTMLElement>("[data-roles]");
-      if (roles && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-        const lista: string[] = JSON.parse(roles.dataset.roles ?? "[]");
-        let i = 0;
-        setInterval(() => {
-          roles.classList.add("saliendo");
-          setTimeout(() => {
-            i = (i + 1) % lista.length;
-            roles.textContent = lista[i];
-            roles.classList.remove("saliendo");
-          }, 350);
-        }, 2600);
+      if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        const obs = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                obs.unobserve(e.target);
+              }
+            }
+          },
+          { threshold: 0.1 },
+        );
+        document.querySelectorAll(".reveal").forEach((el) => obs.observe(el));
+      } else {
+        document.querySelectorAll(".reveal").forEach((el) => el.classList.add("in"));
       }
     </script>
   </body>
