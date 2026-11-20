@@ -147,6 +147,24 @@ export const pares: Proyecto[] = [
     ],
   },
   {
+    id: "duallocke",
+    nombre: "Duallocke",
+    tipo: { en: "Web app", es: "Aplicación web" },
+    descripcion: {
+      en: "Live tracker for two-player Pokémon Soul Link runs: invite codes, linked catches per route, shared lives, gyms and teams, synced between both players.",
+      es: "Tracker en vivo para partidas Soul Link de Pokémon en pareja: códigos de invitación, capturas vinculadas por ruta, vidas compartidas, gimnasios y equipos sincronizados.",
+    },
+    stack: ["Astro", "React", "Hono", "Cloudflare D1", "TypeScript"],
+    imagen: "/proyectos/duallocke.webp",
+    enlaces: [
+      { texto: live, url: "https://duallocke.pages.dev" },
+      { texto: code, url: "https://github.com/CarlosFloresDev/duallocke" },
+    ],
+  },
+];
+
+export const otros: Proyecto[] = [
+  {
     id: "pixelandino",
     nombre: "Pixel Andino",
     tipo: { en: "Web agency", es: "Agencia web" },
@@ -158,9 +176,6 @@ export const pares: Proyecto[] = [
     imagen: "/proyectos/pixelandino.webp",
     enlaces: [{ texto: live, url: "https://pixelandino.pages.dev" }],
   },
-];
-
-export const otros: Proyecto[] = [
   {
     id: "tracktrash",
     nombre: "TrackTrash",
